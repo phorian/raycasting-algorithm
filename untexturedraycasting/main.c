@@ -54,4 +54,48 @@ int main(int argc, char *argv[]){
 
     double time = 0.0;  //time of current frame
     double oldTime = 0.0; // time of previous frame
+
+    int x;
+    double w;
+
+    (void)argc;
+    (void)argv; //won't raise unused parameter warning
+
+    //draw screen
+    screen(screenWidth, screenHeight, 0, "Raycaster");
+
+    //start loop
+    while (!done())
+    {
+        for(int x = 0; x < w; x++ ){
+            /* Calculate ray position and direction */
+            double cameraX = 2.0 * x /(double)w - 1.0; //x-coordinate in camera space
+            double rayDirX = dirX + planeX * cameraX;
+            double rayDirY = dirY + planeY * cameraX;
+
+            /* Which box of map we are in */
+            int mapX = (int)posX;
+            int mapY = (int)posY;
+
+            /* length of ray from player X current position to next x or y-side */
+            double sideDistX;
+            double sideDisty;
+
+            /* length of ray from one x or y-side to the next */
+            double deltaDistX = (rayDirX ==0.0) ? 1e30 : fabs(1.0 / rayDirX);
+            double deltaDistY = (rayDirY ==0.0) ? 1e30 : fabs(1.0 / rayDirY);
+
+            double perpWallDist;
+
+            /* direction to step in x(+1) or y(-1)-direction*/
+            int stepX;
+            int stepY;
+
+            int hit = 0; //check wall hit
+            int side; //was a North-South or East-West wall hit?
+
+        }
+    }
+    
 }
+
