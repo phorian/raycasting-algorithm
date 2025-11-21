@@ -79,7 +79,7 @@ int main(int argc, char *argv[]){
 
             /* length of ray from player X current position to next x or y-side */
             double sideDistX;
-            double sideDisty;
+            double sideDistY;
 
             /* length of ray from one x or y-side to the next */
             double deltaDistX = (rayDirX ==0.0) ? 1e30 : fabs(1.0 / rayDirX);
@@ -93,6 +93,40 @@ int main(int argc, char *argv[]){
 
             int hit = 0; //check wall hit
             int side; //was a North-South or East-West wall hit?
+
+            //calculate step and initial sideDist
+            if(rayDirX < 0.0){
+                stepX = -1;
+                sideDistX = (posX - mapX) * deltaDistX;
+            } else {
+                stepX = 1;
+                sideDistX = (mapX + 1.0 - posX) * deltaDistX;
+            }
+            if(rayDirY < 0.0){
+                stepY = -1;
+                sideDistY = (posY- mapY) * deltaDistY;
+            }else {
+                stepY = 1;
+                sideDistY = (mapY + 1.0 - posY) * deltaDistY;
+            }
+
+            /* DDA : A loop that increments the ray with 1 square everytime, until a wall is hit */
+            while (hit == 0)
+            {
+                /* jump to next map square in x or y direction */
+                if (sideDistX < sideDistY){
+                    sideDistX += deltaDistX;
+                    mapX += stepX;
+                    side = 0;
+                } else {
+                    sideDistY += deltaDistY;
+                    mapY += stepY;
+                    side = 1;
+                }
+                /* Check if ray has hit a wall */
+                if(worldMap[mapX][mapY] > 0) hit = 1;
+            }
+            
 
         }
     }
