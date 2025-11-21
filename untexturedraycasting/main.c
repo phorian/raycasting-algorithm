@@ -126,7 +126,42 @@ int main(int argc, char *argv[]){
                 /* Check if ray has hit a wall */
                 if(worldMap[mapX][mapY] > 0) hit = 1;
             }
+
+            /* Calculate distance projected on camera direction */
+                if(side == 0) perpWallDist = (sideDistX - deltaDistX);
+                else perpWallDist = (sideDistY - deltaDistY);
             
+                /* Calculate height of line to be drawn on screen */
+                int h;
+
+                int lineHeight = (int)(h / perpWallDist);
+
+                /* Calculate lowest and highest pixel to fill in current stripe */
+                int drawStart = -lineHeight/2 + h/ 2;
+                if(drawStart < 0)drawStart = 0;
+                int drawEnd = lineHeight/ 2 + h / 2;
+                if(drawEnd >= h)drawEnd = h - 1;
+
+            /* Choose wall color */
+            ColorRGB color;
+            switch (worldMap[mapX][mapY])
+            {
+            case 1: color = RGB_Red; break;  // red
+            case 2: color = RGB_Green; break;  // green
+            case 3: color = RGB_Blue; break;  // blue
+            case 4: color = RGB_White break;  // white
+            
+            default: color = RGB_Yellow;    // yellow
+                break;
+            }
+
+            /* give x and y different brightness */
+            if(side == 1)
+            {
+                color = ColorRGB_divide(color,2)
+            }
+
+            verLine(x, drawStart, drawEnd, color)
 
         }
     }
